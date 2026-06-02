@@ -55,4 +55,7 @@ export class CreateUserDto {
 
   @IsBoolean()
   status?: boolean;
+
+  @IsString()
+  role?: string;
 }

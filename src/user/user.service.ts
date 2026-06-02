@@ -3,17 +3,23 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
+import { LoginDto } from './dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async registerUser(createUserDto: CreateUserDto) {
     const { name, email, phone, password } = createUserDto;
 
     try {
@@ -51,6 +57,62 @@ export class UserService {
 
       throw new InternalServerErrorException(
         'Something went wrong while creating the user',
+      );
+    }
+  }
+
+  async loginUser(loginDto: LoginDto) {
+    const { email, password } = loginDto;
+
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
+
+      if (!user.status) {
+        throw new UnauthorizedException('Your account has been deactivated');
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid email or password');
+      }
+
+      const payload = {
+        sub: user.id,
+        email: user.email,
+        role: user.role,
+      };
+
+      const accessToken = await this.jwtService.signAsync(payload);
+
+      return {
+        success: true,
+        message: 'Login successful',
+        data: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          role: user.role,
+          status: user.status,
+        },
+        access_token: accessToken,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      console.error(error);
+
+      throw new InternalServerErrorException(
+        'Something went wrong while logging in',
       );
     }
   }
