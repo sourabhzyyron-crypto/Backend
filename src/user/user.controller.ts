@@ -19,8 +19,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard("jwt"), RolesGuard)
+
   findAll() {
     return this.userService.getAllUsers();
   }
