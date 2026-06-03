@@ -63,44 +63,4 @@ export class UserService {
       throw new InternalServerErrorException('Failed to fetch user');
     }
   }
-
-  // async updateUser(id: number, updateUserDto: UpdateUserDto) {
-  //   try {
-  //     const existingUser = await this.prismaService.user.findUnique({
-  //       where: { id },
-  //     });
-
-  //     if (!existingUser) {
-  //       throw new NotFoundException(`User with ID ${id} not found`);
-  //     }
-
-  //     const updatedUser = await this.prismaService.user.update({
-  //       where: { id },
-  //       data: updateUserDto,
-  //       select: {
-  //         id: true,
-  //         name: true,
-  //         email: true,
-  //         phone: true,
-  //         status: true,
-  //       },
-  //     });
-
-  //     return {
-  //       success: true,
-  //       message: 'User updated successfully',
-  //       data: updatedUser,
-  //     };
-  //   } catch (error) {
-  //     if (error instanceof NotFoundException) {
-  //       throw error;
-  //     }
-
-  //     throw new InternalServerErrorException('Failed to update user');
-  //   }
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }

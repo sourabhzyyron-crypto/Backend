@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';

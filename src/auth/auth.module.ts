@@ -7,7 +7,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [PrismaModule, PassportModule,
+  imports: [
+    PrismaModule,
+    PassportModule,
     JwtModule.register({
       secret: 'SECRET_KEY',
       signOptions: { expiresIn: '7d' },

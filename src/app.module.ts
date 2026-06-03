@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CategoryModule } from './category/category.module';
-import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 
