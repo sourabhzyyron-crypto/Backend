@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -17,17 +9,17 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 
 @Controller('category')
-// @Roles(Role.ADMIN)
-// @UseGuards(AuthGuard('jwt'), RolesGuard)
+@Roles(Role.ADMIN)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Post()
+  @Post('add')
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.createCategory(createCategoryDto);
   }
 
-  @Get()
+  @Get('/all')
   findAll() {
     return this.categoryService.getAllCategories();
   }
