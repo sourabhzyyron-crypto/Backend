@@ -25,19 +25,54 @@ enum Role {
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  imageUrl  String?
-  status    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  imageUrl   String?
+  status     Boolean     @default(true)
+  attributes Attribute[]
+  products   Product[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Brand {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
   imageUrl  String?
-  status    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    Boolean   @default(true)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Attribute {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  name       String
+  value      String
+  price      Float
+  offerPrice Float?   // Fixed: Changed from offer_price to camelCase
+  category   Category @relation(fields: [categoryId], references: [id])
+  status     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text // Tip: Gives you more character space in MySQL
+  sku         String   @unique
+  price       Float
+  offerPrice  Float?
+  stock       Int      @default(0)
+  imageUrl    String?
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  brandId     Int
+  brand       Brand    @relation(fields: [brandId], references: [id])
+  status      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

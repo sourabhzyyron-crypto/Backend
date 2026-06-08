@@ -8,6 +8,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { Role } from 'src/common/enums/role.enum';
 
 @Injectable()
 export class UserService {
@@ -24,6 +25,7 @@ export class UserService {
           phone: true,
         },
       });
+     
 
       return {
         success: true,

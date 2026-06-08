@@ -9,10 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
-import { Role } from 'src/common/enums/role.enum';
-import { Roles } from 'src/common/decorators/roles.decorator';
+
 
 @Controller('user')
 export class UserController {

@@ -9,8 +9,8 @@ import { RolesGuard } from 'src/common/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
 
 @Controller('category')
-@Roles(Role.ADMIN)
-@UseGuards(AuthGuard('jwt'), RolesGuard)
+// @Roles(Role.ADMIN)
+// @UseGuards(AuthGuard('jwt'), RolesGuard)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -28,6 +28,7 @@ export class CategoryController {
   findOne(@Param('id') id: string) {
     return this.categoryService.findCategoryById(+id);
   }
+
 
   @Patch(':id')
   update(
